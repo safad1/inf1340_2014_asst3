@@ -13,10 +13,13 @@ __status__ = "Prototype"
 # imports one per line
 import json
 import datetime
+import itertools
+import operator
 
 stock_data = []
 monthly_averages = []
 date_details = []
+
 
 def read_stock_data(stock_name, stock_file_name):
     """
@@ -27,16 +30,16 @@ def read_stock_data(stock_name, stock_file_name):
     :return: List of strings. it returns stock data
     """
     file_data = read_json_from_file(stock_file_name)
-
     for data in file_data:
-        date = data['date']
-        date = datetime.datetime.strptime(date, "%Y-%m-%d")
-        date_month = date.month
-        date_year = date.year
-        date_details.append(date_month, date_year)
-        close = data['close']
-        volume = data['volume']
-        stock_data.append(date, close, volume)
+        stock_date = data['date']
+        stock_date = datetime.datetime.strptime(stock_date, "%Y-%m-%d").strftime("%Y/%m")
+        data.sort(key=operator.itemgetter('date'))
+        sorted_data = []
+        for key, items in itertools.groupby(file_data, operator.itemgetter('date')):
+            sorted_data.append(list(items))
+        for monthly_data in sorted_data:
+            monthly_close = monthly_data['close']
+            monthly_volume = monthly_data['volume']
 
     return stock_data
 
