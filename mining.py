@@ -12,10 +12,12 @@ __status__ = "Prototype"
 
 # imports one per line
 import json
+
 import datetime
 import itertools
 import operator
 import pprint
+
 
 stock_data = []
 monthly_averages = []
@@ -41,6 +43,7 @@ def read_stock_data(stock_name, stock_file_name):
 
         for key, items in itertools.groupby(file_data, operator.itemgetter('Date')):
             sorted_data.append(list(items))
+<<<<<<< HEAD
 
         date_list = []
         for item in sorted_data:
@@ -51,7 +54,16 @@ def read_stock_data(stock_name, stock_file_name):
             total += int((item[k]['Volume'])*(item[k]['Close']))
             total_sales_list.append((month, total))
         print(total_sales_list)
+=======
+        for monthly_data in sorted_data:
+            monthly_close = []
+            monthly_volume = []
+            monthly_close.append(monthly_data['close'])
+            monthly_volume.append(monthly_data['volume'])
+          
+>>>>>>> origin/master
     return stock_data
+
 
 
 def six_best_months():
