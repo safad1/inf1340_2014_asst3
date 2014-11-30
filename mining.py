@@ -15,6 +15,7 @@ import json
 import datetime
 import itertools
 import operator
+import pprint
 
 stock_data = []
 monthly_averages = []
@@ -31,16 +32,25 @@ def read_stock_data(stock_name, stock_file_name):
     """
     file_data = read_json_from_file(stock_file_name)
     for data in file_data:
-        stock_date = data['date']
-        stock_date = datetime.datetime.strptime(stock_date, "%Y-%m-%d").strftime("%Y/%m")
-        data.sort(key=operator.itemgetter('date'))
+        stock_date = datetime.datetime.strptime(data["Date"], "%Y-%m-%d").strftime("%Y/%m")
+        data['Date'] = stock_date
         sorted_data = []
-        for key, items in itertools.groupby(file_data, operator.itemgetter('date')):
-            sorted_data.append(list(items))
-        for monthly_data in sorted_data:
-            monthly_close = monthly_data['close']
-            monthly_volume = monthly_data['volume']
+        total_sales_list = []
+        total_volume_list = []
+        file_data.sort(key=operator.itemgetter('Date'))
 
+        for key, items in itertools.groupby(file_data, operator.itemgetter('Date')):
+            sorted_data.append(list(items))
+
+        date_list = []
+        for item in sorted_data:
+            month = item[0]['Date']
+            size = len(item)
+        total = 0
+        for k in range(size):
+            total += int((item[k]['Volume'])*(item[k]['Close']))
+            total_sales_list.append((month, total))
+        print(total_sales_list)
     return stock_data
 
 
@@ -58,3 +68,6 @@ def read_json_from_file(file_name):
 
     return json.loads(file_contents)
 
+
+x = read_stock_data("GOOG", "data/GOOG.json")
+print(x)
