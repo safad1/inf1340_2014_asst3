@@ -39,11 +39,15 @@ def read_stock_data(stock_name, stock_file_name):
     total_volume_list = []
     month_groups = list()
 
+    #loops to group the data in this list by month and year
     for key, items in itertools.groupby(stock_file,
                                         lambda p: datetime.datetime.strptime(p['Date'], "%Y-%m-%d").strftime("%Y/%m")):
         month_groups.append(list(items))
 
+<<<<<<< HEAD
         #inner-loop to go through each month list and calculate total sales and volume
+=======
+>>>>>>> origin/master
         for value in items:
             total = sum([int(value["Volume"])*float(value["Close"])])
             total_sales_list.append((key, total))
@@ -67,6 +71,7 @@ def six_best_months():
     sorts monthly averages according to highest six months averages
     :return: list of tuples contains six months with six dates
     """
+<<<<<<< HEAD
     # sorting data in monthly averages from best to worst months
     sorted_list = sorted(monthly_averages, key=operator.itemgetter('Date'))
 
@@ -74,6 +79,10 @@ def six_best_months():
     best_months = sorted_list[:6]
     
     # adding best_months into a list of tuples which include date and month
+=======
+    sorted_list = sorted(monthly_averages, key=operator.itemgetter('Date'))
+    best_months = sorted_list[:6]
+>>>>>>> origin/master
     six_best_months.append(monthly_averages['Date'], best_months)
     return six_best_months
 
@@ -83,11 +92,16 @@ def six_worst_months():
     sorts monthly averages according to lowest six months averages
     :return: list of tuples contains six months with six dates
     """
+<<<<<<< HEAD
     # sorting data in monthly averages from worst to best months
     sorted_list = sorted(monthly_averages, key=operator.itemgetter('Date'))
     worst_months = sorted(sorted_list[6:], key=operator.itemgetter('Date'))
 
     # slicing sorted list to get the worst six monthly averages
+=======
+    sorted_list = sorted(monthly_averages, key=operator.itemgetter('Date'))
+    worst_months = sorted(sorted_list[6:], key=operator.itemgetter('key'))
+>>>>>>> origin/master
     six_worst_months.append(monthly_averages['Date'], worst_months)
     return six_best_months
 
@@ -99,6 +113,11 @@ def read_json_from_file(file_name):
     """
     with open(file_name) as file_handle:
         file_contents = file_handle.read()
+<<<<<<< HEAD
+=======
+        #Reads the file into a dictionary
+
+>>>>>>> origin/master
     return json.loads(file_contents)
 
 # keeping this line to see what the function eventually displays (as a test)
