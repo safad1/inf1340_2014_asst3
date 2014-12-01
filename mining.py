@@ -39,9 +39,11 @@ def read_stock_data(stock_name, stock_file_name):
     total_volume_list = []
     month_groups = list()
 
+    #loops to group the data in this list by month and year
     for key, items in itertools.groupby(stock_file,
                                         lambda p: datetime.datetime.strptime(p['Date'], "%Y-%m-%d").strftime("%Y/%m")):
         month_groups.append(list(items))
+
         for value in items:
             total = sum([int(value["Volume"])*float(value["Close"])])
             total_sales_list.append((key, total))
@@ -64,8 +66,8 @@ def six_best_months():
     sorts monthly averages according to highest six months averages
     :return: list of tuples contains six months with six dates
     """
-    sortedlist = sorted(monthly_averages, key=operator.itemgetter('Date'))
-    best_months = sortedlist[:6]
+    sorted_list = sorted(monthly_averages, key=operator.itemgetter('Date'))
+    best_months = sorted_list[:6]
     six_best_months.append(monthly_averages['Date'], best_months)
     return six_best_months
 
@@ -75,8 +77,8 @@ def six_worst_months():
     sorts monthly averages according to lowest six months averages
     :return: list of tuples contains six months with six dates
     """
-    sortedlist = sorted(monthly_averages, key=operator.itemgetter('Date'))
-    worst_months = sorted(sortedlist[6:], key=operator.itemgetter('key'))
+    sorted_list = sorted(monthly_averages, key=operator.itemgetter('Date'))
+    worst_months = sorted(sorted_list[6:], key=operator.itemgetter('key'))
     six_worst_months.append(monthly_averages['Date'], worst_months)
     return six_best_months
 
@@ -88,6 +90,7 @@ def read_json_from_file(file_name):
     """
     with open(file_name) as file_handle:
         file_contents = file_handle.read()
+        #Reads the file into a dictionary
 
     return json.loads(file_contents)
 
