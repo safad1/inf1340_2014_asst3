@@ -33,7 +33,7 @@ def read_stock_data(stock_name, stock_file_name):
     :param stock_file_name: The name of a JSON formatted file that contains monthly stock data
     :return: lists of tuples contain month and monthly average
     """
-    # iterates over data in the given json file
+    # Reads data from the given json file
     stock_file = read_json_from_file(stock_file_name)
     total_sales_list = []
     total_volume_list = []
@@ -42,14 +42,17 @@ def read_stock_data(stock_name, stock_file_name):
     for key, items in itertools.groupby(stock_file,
                                         lambda p: datetime.datetime.strptime(p['Date'], "%Y-%m-%d").strftime("%Y/%m")):
         month_groups.append(list(items))
+
+        #inner-loop to go through each month list and calculate total sales and volume
         for value in items:
             total = sum([int(value["Volume"])*float(value["Close"])])
             total_sales_list.append((key, total))
             total_volume = sum([int(value["Volume"])])
             total_volume_list.append((key, total_volume))
-
         size = len(total_sales_list)
+
         index = 0
+        # iterates through total sales_length  and divide each item in this list by items in total volume list
         for index in range(size):
             if total_sales_list[index][0] == total_volume_list[index][0]:
                 monthly_averages.append((total_sales_list[index][0], total_sales_list[index][1] /
@@ -64,8 +67,13 @@ def six_best_months():
     sorts monthly averages according to highest six months averages
     :return: list of tuples contains six months with six dates
     """
-    sortedlist = sorted(monthly_averages, key=operator.itemgetter('Date'))
-    best_months = sortedlist[:6]
+    # sorting data in monthly averages from best to worst months
+    sorted_list = sorted(monthly_averages, key=operator.itemgetter('Date'))
+
+    # slicing sorted list to get the best six monthly averages
+    best_months = sorted_list[:6]
+    
+    # adding best_months into a list of tuples which include date and month
     six_best_months.append(monthly_averages['Date'], best_months)
     return six_best_months
 
@@ -75,8 +83,11 @@ def six_worst_months():
     sorts monthly averages according to lowest six months averages
     :return: list of tuples contains six months with six dates
     """
-    sortedlist = sorted(monthly_averages, key=operator.itemgetter('Date'))
-    worst_months = sorted(sortedlist[6:], key=operator.itemgetter('key'))
+    # sorting data in monthly averages from worst to best months
+    sorted_list = sorted(monthly_averages, key=operator.itemgetter('Date'))
+    worst_months = sorted(sorted_list[6:], key=operator.itemgetter('Date'))
+
+    # slicing sorted list to get the worst six monthly averages
     six_worst_months.append(monthly_averages['Date'], worst_months)
     return six_best_months
 
@@ -88,7 +99,6 @@ def read_json_from_file(file_name):
     """
     with open(file_name) as file_handle:
         file_contents = file_handle.read()
-
     return json.loads(file_contents)
 
 # keeping this line to see what the function eventually displays (as a test)
