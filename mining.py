@@ -23,7 +23,7 @@ monthly_averages = []
 date_details = []
 six_best_months = []
 six_worst_months = []
-# places a tuple for each entry
+# places a tuple for each entry in a list
 
 
 def read_stock_data(stock_name, stock_file_name):
@@ -97,7 +97,7 @@ def six_worst_months():
 def read_json_from_file(file_name):
     """
     :param file_name: name of json file to read
-    :return: json data loaded  
+    :return: json data loaded
     """
     with open(file_name) as file_handle:
         #Reads the file into a dictionary
